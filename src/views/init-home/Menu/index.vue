@@ -11,21 +11,13 @@
     </div>
 
     <div v-if="menusData.current.length" class="menu-tree-panel">
-      <div class="menu-tree-panel__header">
-        {{ $t("Menu.index.459633-3") }}
-      </div>
-      <a-tree
-        v-model:expandedKeys="expandedKeys"
-        :tree-data="menusData.current"
-        :selectedKeys="[]"
-        :show-line="{ showLeafIcon: false }"
-        :fieldNames="{key: 'id'}"
-        blockNode
-      >
-        <template #title="{ name }">
-          <span class="menu-tree-node-title">{{ name }}</span>
-        </template>
-      </a-tree>
+      <a-table
+        :data-source="menusData.current"
+        :columns="columns"
+        :pagination="false"
+        rowKey="id"
+        :scroll="{y: '35rem'}"
+      ></a-table>
     </div>
     <CloudEmpty
       v-else
@@ -70,6 +62,29 @@ const menusData = reactive({
 });
 const hasAgentPermission = ref(false)
 const expandedKeys = ref<string[]>([])
+const columns = [
+  {
+    dataIndex: 'code',
+    title: 'code',
+    ellipsis: true,
+    fixed: 'left',
+  },
+  {
+    dataIndex: 'name',
+    title: 'name',
+    ellipsis: true,
+    fixed: 'left',
+  },
+  {
+    dataIndex: 'url',
+    title: 'url',
+    ellipsis: true,
+  },
+  {
+    dataIndex: 'sortIndex',
+    title: 'sortIndex'
+  }
+]
 
 /**
  * 查询支持的协议
@@ -137,7 +152,7 @@ const filterMenuByPermission = (
         })
       })
     }
-    if (item.children) {
+    if (item.children && item.children.length) {
       item.children = filterMenuByPermission(permissions, item.children, hasProtocol);
     }
     if (!hasProtocol && item.options?.hasProtocol) {
@@ -263,7 +278,6 @@ defineExpose({
 }
 
 .menu-tree-panel {
-  max-height: 22.5rem;
   overflow: auto;
   padding: var(--space-3) var(--space-4);
   background: var(--bg);

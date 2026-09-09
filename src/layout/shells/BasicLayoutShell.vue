@@ -60,20 +60,20 @@
               <Language key="Language" />
               <Notice key="notice" />
             </template>
-            <a-tooltip
-              v-if="variant === 'project' && settingsVisible"
-              :title="$t('layout.project.settings')"
-            >
-              <a-button
-                class="project-layout__header-action"
-                :class="{ 'project-layout__header-action--active': settingsActive }"
-                type="text"
-                :aria-label="$t('layout.project.settings')"
-                @click="enterSettings"
-              >
-                <template #icon><AIcon type="SettingOutlined" /></template>
-              </a-button>
-            </a-tooltip>
+<!--            <a-tooltip-->
+<!--              v-if="variant === 'project' && settingsVisible"-->
+<!--              :title="$t('layout.project.settings')"-->
+<!--            >-->
+<!--              <a-button-->
+<!--                class="project-layout__header-action"-->
+<!--                :class="{ 'project-layout__header-action&#45;&#45;active': settingsActive }"-->
+<!--                type="text"-->
+<!--                :aria-label="$t('layout.project.settings')"-->
+<!--                @click="enterSettings"-->
+<!--              >-->
+<!--                <template #icon><AIcon type="SettingOutlined" /></template>-->
+<!--              </a-button>-->
+<!--            </a-tooltip>-->
             <LayoutSidebarUser key="user" :collapsed="state.collapsed" />
           </RegistryComponent>
         </div>

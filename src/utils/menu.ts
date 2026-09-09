@@ -299,7 +299,7 @@ export const handleMenus = (
   }
 
   function siderLoop(data: MenuItem[]) {
-    const _menu = filterMenuData(data).filter((item) => !handleMeta(item, !!item.appId).hideInMenu)
+    const _menu = filterMenuData(data)
 
     if (_menu && _menu.length) {
       return _menu.map((item) => {

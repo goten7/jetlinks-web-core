@@ -152,7 +152,6 @@ export const useBasicLayoutController = (
     visible: settingsDomainVisible,
   } = useProjectSecondaryMenuExtensions(
     PROJECT_SETTINGS_ROUTE_NAME,
-    PROJECT_SETTINGS_MENU_CODE,
   )
   const settingsActive = computed(() => (
     layoutVariant.value === 'project' && settingsDomainActive.value
