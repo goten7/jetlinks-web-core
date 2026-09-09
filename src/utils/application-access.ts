@@ -24,6 +24,8 @@ export interface ApplicationAccessOptions {
   applicationName?: string
   domain?: string
   currentProjectCode?: string
+  /** 独立部署没有项目会话时，复用当前请求使用的登录上下文。 */
+  accessContext?: ProjectStorageInfo
   path?: string
   location?: ApplicationAccessLocation
 }
@@ -147,7 +149,7 @@ const createBootstrapPayload = (
 })
 
 /**
- * Prepare an application runtime URL from the active project's stored access context.
+ * Prepare an application runtime URL from project storage or the current login context.
  *
  * Same-Origin targets are written immediately. Cross-Origin targets receive a one-time
  * bootstrap payload because one Origin cannot write another Origin's localStorage.
@@ -191,6 +193,7 @@ export const prepareApplicationAccess = (
   const currentProjectCode = normalizeApplicationCode(options.currentProjectCode)
     || getProjectCodeFromPathname(location.pathname)
   const currentProjectStorage = dependencies.getProjectStorage(currentProjectCode)
+    || options.accessContext
   if (!currentProjectStorage) {
     return { success: false, reason: 'missing-project-storage' }
   }

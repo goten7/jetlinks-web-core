@@ -17,6 +17,7 @@ import {
 import { prepareApplicationAccess } from '@jetlinks-web-core/utils/application-access'
 import { createProjectRuntimeHref, getProjectCodeFromLocation } from '@jetlinks-web-core/utils/project-runtime'
 import { getProjectStorage } from '@jetlinks-web-core/utils/project-storage'
+import { getApplicationAccessContext } from '@jetlinks-web-core/utils/request-context'
 import { useMenuStore } from './menu'
 
 const $t = i18n.global.t
@@ -208,6 +209,7 @@ export const useBusinessApplicationStore = defineStore('business-application', (
       applicationName: nextApplication.name,
       currentProjectCode: options.currentProjectCode,
       domain: customDomain,
+      accessContext: getApplicationAccessContext(),
       path: result.firstMenuPath || options.fallbackPath || '/403',
     })
     if (!access.success) {

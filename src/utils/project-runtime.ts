@@ -125,7 +125,7 @@ export const isApplicationRuntime = () => {
     if (projectContext) {
         const { storage: projectStorage } = projectContext
 
-        return !!projectStorage.scope
+        return !!projectStorage?.scope
     }
 
     return false
