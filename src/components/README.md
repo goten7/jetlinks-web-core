@@ -8,7 +8,7 @@
 2. 打开候选目录中的 `README.md`（少数历史文档为 `readme.md`），确认真实用法和限制。
 3. 核验 [`index.ts`](index.ts) 的全局注册与具名导出；注册名、目录名和导出名可能不同。
 4. 核验目标页面已有的相邻用法和当前 core 版本；文档与生产代码冲突时，以源码和生产代码为准。
-5. 只有在根入口没有满足需求的能力时，才使用组件目录的深层路径，并确认该路径已有稳定生产用法。
+5. 只有在根入口没有满足需求的能力时，才使用组件目录路径；优先使用明确文档化的按需公开入口，内部子路径需要已有稳定生产用法。
 
 ## 使用方式
 
@@ -62,6 +62,10 @@ import {
 
 ## 场景映射
 
+### 独立仪表盘画布
+
+[`DashBoardCanvas`](DashBoardCanvas/README.md) 从历史 `LoadingBoard` 抽离网格与抽屉交互，按 `@jetlinks-web-core/components/DashBoardCanvas` 目录入口导入。调用方通过 `catalog` 注入符合 BusinessAlarm 协议的业务组件，通过 `v-model` 接收配置；core 使用实例内状态承载渲染与配置，不绑定项目管理或 designer store。接入方式、迁移对应关系与验证限制见组件说明。
+
 | 场景 | 候选能力 | 文档 | 根入口 / 全局名 |
 | --- | --- | --- | --- |
 | 页面标题、返回和操作区 | `PageHeader`、`DetailHeader`、`PageActions`、`TitleComponent` | [PageHeader](PageHeader/README.md)、[DetailHeader](DetailHeader/README.md)、[PageActions](PageActions/README.md)、[TitleComponent](TitleComponent/README.md) | 具名导出：`PageHeader`、`DetailHeader`；全局注册：`PageActions`、`TitleComponent` |
@@ -85,6 +89,7 @@ import {
 
 | 目录 / 能力 | 用途 | 文档 | 使用边界 |
 | --- | --- | --- | --- |
+| `DashBoardCanvas` | 独立仪表盘网格渲染与配置承载 | [DashBoardCanvas/README.md](DashBoardCanvas/README.md) | 明确公开的按需目录入口；具名导出 `DashBoardCanvas` 和配置类型，不全局注册 |
 | `CardSelect` | 网格卡片选择器 | [CardSelect/README.md](CardSelect/README.md) | core 插件未注册；目录默认导出可被业务按深层路径使用 |
 | `IconValue` | 图标值展示、编辑 | [IconValue/README.md](IconValue/README.md) | `IconValueView` / `IconValueEditor` 通过目录深层路径使用 |
 | `MarketplaceResourcePicker` | 市场资源选择器 | [MarketplaceResourcePicker/README.md](MarketplaceResourcePicker/README.md) | core 插件未注册；需按目录入口导入 |
@@ -104,7 +109,7 @@ import {
 - `RegisterComponents` 的目录默认导出全局注册名是 `RegistryComponent`。
 - `FormItem` 的默认对象会注册 `FormItemOrg`、`FormItemRole`、`FormItemPosition`，它们不是 `index.ts` 的具名导出。
 - `Echarts` 通过插件安装，不要把它与普通 `.component()` 注册组件混用；图表实例和按需 library 注册见 [Echarts/README.md](Echarts/README.md)。
-- `CardSelect`、`IconValue`、`MarketplaceResourcePicker` 等目录存在不等于根入口公开；深层能力必须有当前生产代码证据。
+- `CardSelect`、`IconValue`、`MarketplaceResourcePicker` 等目录存在不等于根入口公开；除明确文档化的按需公开入口外，深层能力必须有当前生产代码证据。
 
 ## 与 `@jetlinks-web/components` 的边界
 
@@ -122,7 +127,7 @@ import {
 - 是否区分目录名、具名导出名和全局注册名（例如 `Search` / `ProSearch`、`RegisterComponents` / `RegistryComponent`）。
 - 是否核验 [`index.ts`](index.ts)，没有把未注册或未导出的目录当成根 API。
 - 是否优先复用 core 的项目级封装，并确认目标页面已有的权限、i18n、路由和上传约定。
-- 是否只在有真实生产导入证据时使用深层子路径、内部子组件或工具函数。
+- 是否优先使用明确文档化的按需公开入口，只在有真实生产导入证据时使用内部子组件或工具函数。
 - 是否按组件文档中的 Props、事件、插槽、Expose 和 Rules 编写调用代码，没有凭目录名发明 API。
 
 ## 详细文档索引
