@@ -80,8 +80,15 @@ export function useMatrixGridLayout(options: MatrixGridLayoutOptions) {
     const columnCount = options.getColumnCount()
     const firstColumnWidth = options.getFirstColumnWidth()
     const columnMinWidth = options.getColumnMinWidth()
+    // 数据列筛选到 0 时由首列承接可用宽度，避免固定列宽后留下无意义空白区域。
+    const firstColumnTemplate = columnCount > 0
+      ? toRem(firstColumnWidth)
+      : `minmax(${toRem(firstColumnWidth)}, 1fr)`
+    const dataColumnTemplate = columnCount > 0
+      ? ` repeat(${columnCount}, minmax(${toRem(columnMinWidth)}, 1fr))`
+      : ''
     return {
-      gridTemplateColumns: `${toRem(firstColumnWidth)} repeat(${columnCount}, minmax(${toRem(columnMinWidth)}, 1fr))`,
+      gridTemplateColumns: `${firstColumnTemplate}${dataColumnTemplate}`,
       minWidth: toRem(firstColumnWidth + columnCount * columnMinWidth),
       gap: toRem(options.getGridGap()),
       '--matrix-grid-row-height': toRem(options.getRowHeight()),
